@@ -5,7 +5,7 @@ using UnityEngine;
 public class NotesFallUpdater : MonoBehaviour
 {
     static float speed = 0.06f;
-    static bool isPose = true;
+    public static bool isPose = true;
 
     public float notesSpeed
     {
