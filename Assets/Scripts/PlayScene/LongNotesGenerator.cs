@@ -13,7 +13,11 @@ public class LongNotesGenerator : MonoBehaviour
 
     void Start()
     {
-
+        Create(0, 2, 10.0f, 16.0f);
+        Create(6, 5, 12.0f, 20.0f);
+    }
+    void Create(int startLane, int endLane, float startTim, float endTim)
+    {
         //曲線の始点、制御点(今回は適当に設定)、終点
         Vector3 startPos = new Vector3(-3.5f * laneWidth + laneWidth * startLane + laneWidth / 2, startTim, -0.005f);
         Vector3 controlPos = new Vector3(-3.5f * laneWidth + laneWidth * endLane + laneWidth / 2, (startTim + endTim) / 3, -0.005f);
@@ -49,7 +53,7 @@ public class LongNotesGenerator : MonoBehaviour
 
 
     //曲線生成
-    public Vector3[] GetCurve(Vector3 sPos, Vector3 cPos, Vector3 ePos, int splitNum)
+    private Vector3[] GetCurve(Vector3 sPos, Vector3 cPos, Vector3 ePos, int splitNum)
     {
         float t = 0;
 
@@ -71,7 +75,7 @@ public class LongNotesGenerator : MonoBehaviour
     }
 
     //★追加★
-    void Generate(Vector3 sPos, Vector3 ePos, GameObject notesObj)
+    private void Generate(Vector3 sPos, Vector3 ePos, GameObject notesObj)
     {
         //メッシュを生成し、MeshFilterに渡す。
         //MeshFilterがMeshRendererにメッシュを渡して、メッシュが描画される。
