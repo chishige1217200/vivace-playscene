@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ClickTester : MonoBehaviour
+public class LineJudger : MonoBehaviour
 {
     [SerializeField] int lineNum = 0;
     public void BeginDrag()

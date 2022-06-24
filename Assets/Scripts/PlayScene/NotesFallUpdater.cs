@@ -5,14 +5,15 @@ using UnityEngine;
 public class NotesFallUpdater : MonoBehaviour
 {
     static float speed = 0.06f;
+    static bool isPose = true;
 
     public float notesSpeed
     {
-        get => speed;
+        set => speed = value;
     }
 
     void FixedUpdate()
     {
-        this.transform.localPosition -= new Vector3(0, speed, 0);
+        if (!isPose) transform.localPosition -= new Vector3(0, speed, 0);
     }
 }
