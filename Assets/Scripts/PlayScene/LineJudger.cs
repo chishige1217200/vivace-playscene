@@ -50,13 +50,13 @@ public class LineJudger : MonoBehaviour
     }
     public void BeginDrag(PointerEventData data)
     {
-        Debug.Log("BeginDrag: " + lineNum + "," + data.position.y);
+        Debug.Log("BeginDrag: " + lineNum + "," + data.position.y + "," + data.pointerId);
         CoordYPresever.AddCoordY(data.position.y, lineNum);
     }
 
     public void Drop(PointerEventData data)
     {
-        Debug.Log("Drop: " + lineNum + "," + data.position.y);
+        Debug.Log("Drop: " + lineNum + "," + data.position.y + "," + data.pointerId);
         int result = CoordYPresever.isFlick(data.position.y, lineNum);
         if (result == 1) Debug.Log("Flick Up!");
     }
@@ -68,7 +68,7 @@ public class LineJudger : MonoBehaviour
 
     public void PointerEnter(PointerEventData data)
     {
-        Debug.Log("PointerEnter: " + lineNum + "," + data.position.y);
+        Debug.Log("PointerEnter: " + lineNum + "," + data.position.y + "," + data.pointerId);
         CoordYPresever.AddCoordY(data.position.y, lineNum);
     }
 }
