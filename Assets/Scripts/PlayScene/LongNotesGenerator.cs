@@ -13,10 +13,14 @@ public class LongNotesGenerator : MonoBehaviour
 
     void Start()
     {
-
+        Create(0, 2, 10.0f, 16.0f);
+        Create(6, 5, 12.0f, 20.0f);
+    }
+    void Create(int startLane, int endLane, float startTim, float endTim)
+    {
         //曲線の始点、制御点(今回は適当に設定)、終点
         Vector3 startPos = new Vector3(-0.9f + laneWidth * startLane, startTim, -0.005f);
-        Vector3 controlPos = new Vector3(-0.9f + laneWidth * endLane, (startTim + endTim) / 4, -0.005f);
+        Vector3 controlPos = new Vector3(-0.9f + laneWidth * endLane, startTim + endTim / 4, -0.005f);
         Vector3 endPos = new Vector3(-0.9f + laneWidth * endLane, endTim, -0.005f);
 
         //曲線生成
