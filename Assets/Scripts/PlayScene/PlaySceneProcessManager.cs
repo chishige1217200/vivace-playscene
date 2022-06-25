@@ -27,17 +27,19 @@ public class PlaySceneProcessManager : MonoBehaviour
 {
     List<List<NoteData>> _notes = new List<List<NoteData>>(); // 2次元リスト
     static float laneWidth = 0.3f; //レーンの太さ( = ノーツの太さ )
-    float _offset = 10.8f;
+    float _offset = 9f;
     [SerializeField] LongNotesGenerator lng;
+    [SerializeField] AudioSource bgm;
     void Start()
     {
-        TextAsset jsonFile = Resources.Load("sample2") as TextAsset;
+        TextAsset jsonFile = Resources.Load("UFOCATCHER9_BGM") as TextAsset;
         string inputString = jsonFile.ToString();
         MusicJson music = JsonUtility.FromJson<MusicJson>(inputString);
 
         Debug.Log(music);
         LoadNotes(music);
-        Invoke("UnPause", 3);
+        Invoke("NotesStart", 1);
+        Invoke("BGMStart", 4); // ノーツ再生から3秒待たなければならない
     }
 
     void LoadNotes(MusicJson music)
@@ -45,9 +47,11 @@ public class PlaySceneProcessManager : MonoBehaviour
         MusicData.BPM = music.BPM;
         MusicData.musicName = music.name;
 
+        Debug.Log(MusicData.BPM);
+
         Object noteObject = Resources.Load("Notes");
 
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < music.maxBlock; i++)
         {
             _notes.Add(new List<NoteData>());
         }
@@ -60,7 +64,8 @@ public class PlaySceneProcessManager : MonoBehaviour
             firstNote.num = music.notes[i].num;
             firstNote.block = music.notes[i].block;
             firstNote.type = music.notes[i].type;
-            firstNote.timing = (60f * firstNote.num) / (MusicData.BPM * firstNote.LPB); // ms
+            firstNote.timing = (50f * firstNote.num) / (MusicData.BPM * firstNote.LPB);
+            firstNote.noteObjects = new List<GameObject>();
             _notes[firstNote.block].Add(firstNote);
             if (music.notes[i].notes.Length == 1)
             {
@@ -68,13 +73,13 @@ public class PlaySceneProcessManager : MonoBehaviour
                 nextNote.num = music.notes[i].notes[0].num;
                 nextNote.block = music.notes[i].notes[0].block;
                 nextNote.type = music.notes[i].notes[0].type;
-                nextNote.timing = (60f * nextNote.num) / (MusicData.BPM * nextNote.LPB); // ms
+                nextNote.timing = (50f * nextNote.num) / (MusicData.BPM * nextNote.LPB);
                 _notes[nextNote.block].Add(nextNote);
             }
 
             if (firstNote.type == 1)
             {
-                Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, 3.6f * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0));
+                firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, 3f * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
             }
             else if (firstNote.type == 2)
             {
@@ -87,8 +92,13 @@ public class PlaySceneProcessManager : MonoBehaviour
         }
     }
 
-    void UnPause()
+    void NotesStart()
     {
         NotesFallUpdater.isPose = false;
+    }
+
+    void BGMStart()
+    {
+        bgm.Play();
     }
 }

@@ -4,25 +4,21 @@ using UnityEngine;
 
 public class LongNotesGenerator : MonoBehaviour
 {
-    [SerializeField] int startLane = 0; //ロングノーツの始点がどこのレーンにあるか
-    [SerializeField] int endLane = 2; //ロングノーツの終点がどこのレーンにあるか
-    [SerializeField] float startTim = 1.0f; //ロングノーツの始点が来るタイミング
-    [SerializeField] float endTim = 6.0f; //ロングノーツの終点が来るタイミング
     [SerializeField] Material longNotesFiller;
     static float laneWidth = 0.3f; //レーンの太さ( = ノーツの太さ )
-    static float _offset = 10.8f;
+    static float _offset = 9f;
 
     void Start()
     {
         //Create(0, 2, 0f, 3.0f);
         //Create(6, 5, 0f, 5.0f);
     }
-    public void Create(int startLane, int endLane, float startTim, float endTim)
+    public List<GameObject> Create(int startLane, int endLane, float startTim, float endTim)
     {
         //曲線の始点、制御点(今回は適当に設定)、終点
-        Vector3 startPos = new Vector3(-0.9f + laneWidth * startLane, 3.6f * startTim + _offset, -0.005f);
-        Vector3 controlPos = new Vector3(-0.9f + laneWidth * endLane, 3.6f * (startTim + endTim / 4) + _offset, -0.005f);
-        Vector3 endPos = new Vector3(-0.9f + laneWidth * endLane, 3.6f * endTim + _offset, -0.005f);
+        Vector3 startPos = new Vector3(-0.9f + laneWidth * startLane, 3f * startTim + _offset, -0.005f);
+        Vector3 controlPos = new Vector3(-0.9f + laneWidth * endLane, 3f * (startTim + endTim / 4) + _offset, -0.005f);
+        Vector3 endPos = new Vector3(-0.9f + laneWidth * endLane, 3f * endTim + _offset, -0.005f);
 
         //曲線生成
         Vector3[] curve = GetCurve(startPos, controlPos, endPos, 10);
@@ -40,6 +36,8 @@ public class LongNotesGenerator : MonoBehaviour
         renderer.alignment = LineAlignment.TransformZ;
         renderer.SetPositions(curve);*/
 
+        List<GameObject> longNotes = new List<GameObject>();
+
         //★追加★
         for (int i = 0; i < curve.Length - 1; i++)
         {
@@ -49,7 +47,10 @@ public class LongNotesGenerator : MonoBehaviour
             longNotesPart.AddComponent<MeshRenderer>().material = longNotesFiller;
             longNotesPart.AddComponent<NotesFallUpdater>();
             Generate(curve[i], curve[i + 1], longNotesPart);
+            longNotes.Add(longNotesPart);
         }
+
+        return longNotes;
     }
 
 

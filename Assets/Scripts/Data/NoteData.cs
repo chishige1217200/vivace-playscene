@@ -9,4 +9,5 @@ public class NoteData
     public int block;
     public int type;
     public float timing; // ms
+    public List<GameObject> noteObjects;
 }
