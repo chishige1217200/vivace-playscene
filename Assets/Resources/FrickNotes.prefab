@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -3033364112851998813}
   - component: {fileID: 2949704392374520119}
   m_Layer: 0
-  m_Name: Notes
+  m_Name: FrickNotes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: d1bd618bc25228c4e9c5fc59aa223b4f, type: 2}
+  - {fileID: 2100000, guid: 55b3f7eb2bc85134da86f2dbedb9fa87, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
