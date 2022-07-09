@@ -32,7 +32,7 @@ public class PlaySceneProcessManager : MonoBehaviour
     [SerializeField] AudioSource bgm;
     void Start()
     {
-        TextAsset jsonFile = Resources.Load("UFOCATCHER9_BGM") as TextAsset;
+        TextAsset jsonFile = Resources.Load("maiden_voyage_master_proto") as TextAsset;
         string inputString = jsonFile.ToString();
         MusicJson music = JsonUtility.FromJson<MusicJson>(inputString);
 

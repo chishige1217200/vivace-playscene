@@ -2639,10 +2639,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e49628e24e2f9840b91796f54ca881f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startLane: 1
-  endLane: 5
-  startTim: 1
-  endTim: 4
   longNotesFiller: {fileID: 2100000, guid: d1bd618bc25228c4e9c5fc59aa223b4f, type: 2}
 --- !u!4 &971870140
 Transform:
@@ -3934,7 +3930,7 @@ AudioSource:
   m_Volume: 1
   m_Pitch: 1
   Loop: 0
-  Mute: 0
+  Mute: 1
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128

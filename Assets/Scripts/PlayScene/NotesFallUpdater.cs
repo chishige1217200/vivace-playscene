@@ -16,4 +16,9 @@ public class NotesFallUpdater : MonoBehaviour
     {
         if (!isPose) transform.localPosition -= new Vector3(0, speed, 0);
     }
+
+    public void Push()
+    {
+
+    }
 }
