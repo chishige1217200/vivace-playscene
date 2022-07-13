@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class NotesFallUpdater : MonoBehaviour
 {
-    static float speed = 0.06f;
-    public static bool isPose = true;
+    static float speed = 2.4f; // 1秒間に3m移動
+    //public static bool isPose = true;
+    private Rigidbody rb;
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        rb.velocity = new Vector3(0, -speed, 0);
+    }
+
+    void Update()
+    {
+        if (transform.position.y <= -5f)
+            Destroy(this);
+    }
 
     public float notesSpeed
     {
         set => speed = value;
     }
 
-    void FixedUpdate()
-    {
-        if (!isPose) transform.localPosition -= new Vector3(0, speed, 0);
-    }
-
-    public void Push()
-    {
-
-    }
 }

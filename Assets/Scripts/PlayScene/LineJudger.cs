@@ -58,12 +58,21 @@ public class LineJudger : MonoBehaviour
     {
         Debug.Log("Drop: " + lineNum + "," + data.position.y + "," + data.pointerId);
         int result = CoordYPresever.isFlick(data.position.y, lineNum);
-        if (result == 1) Debug.Log("Flick Up!");
+        if (result == 1) // 長押しからフリック
+        {
+            Debug.Log("Flick Up!");
+            PlaySceneProcessManager.JudgeTiming(lineNum, 5);
+        }
+        else // 長押し離す
+        {
+            PlaySceneProcessManager.JudgeTiming(lineNum, 2);
+        }
     }
 
     public void PointerDown()
     {
         Debug.Log("PointerDown: " + lineNum);
+        PlaySceneProcessManager.JudgeTiming(lineNum, 1);
     }
 
     public void PointerEnter(PointerEventData data)

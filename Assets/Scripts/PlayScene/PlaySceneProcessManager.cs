@@ -25,31 +25,49 @@ public class NotesJson
 
 public class PlaySceneProcessManager : MonoBehaviour
 {
-    List<List<NoteData>> _notes = new List<List<NoteData>>(); // 2次元リスト
+    static List<List<NoteData>> _notes = new List<List<NoteData>>(); // 2次元リスト
     static float laneWidth = 0.3f; //レーンの太さ( = ノーツの太さ )
     float _offset = 9f;
+    public static bool isPose { get; private set; } = false;
+    float musicTime;
     [SerializeField] LongNotesGenerator lng;
     [SerializeField] AudioSource bgm;
+    [SerializeField] AudioSource metro;
     void Start()
     {
-        TextAsset jsonFile = Resources.Load("maiden_voyage_master_proto") as TextAsset;
+        TextAsset jsonFile = Resources.Load("UFOCATCHER9_BGM (2)") as TextAsset;
         string inputString = jsonFile.ToString();
         MusicJson music = JsonUtility.FromJson<MusicJson>(inputString);
+        MusicData.BPM = music.BPM;
+        MusicData.musicName = music.name;
+        Debug.Log(MusicData.BPM);
 
-        Debug.Log(music);
+        //Debug.Log(music);
         LoadNotes(music);
-        Invoke("NotesStart", 1);
-        Invoke("BGMStart", 4); // ノーツ再生から3秒待たなければならない
+        //Invoke("NotesStart", 1);
+        InvokeRepeating("Metro", 1, 60f / MusicData.BPM);
+        Invoke("BGMStart", 3); // ノーツ再生から3秒待たなければならない
+    }
+
+    void Update()
+    {
+        if (!isPose)
+        {
+            musicTime += Time.deltaTime;
+        }
+    }
+
+    void Metro()
+    {
+        metro.Stop();
+        Debug.Log("Play");
+        metro.PlayOneShot(metro.clip);
     }
 
     void LoadNotes(MusicJson music)
     {
-        MusicData.BPM = music.BPM;
-        MusicData.musicName = music.name;
-
-        Debug.Log(MusicData.BPM);
-
         Object noteObject = Resources.Load("Notes");
+        Object noteObjectF = Resources.Load("FrickNotes");
 
         for (int i = 0; i < music.maxBlock; i++)
         {
@@ -64,7 +82,7 @@ public class PlaySceneProcessManager : MonoBehaviour
             firstNote.num = music.notes[i].num;
             firstNote.block = music.notes[i].block;
             firstNote.type = music.notes[i].type;
-            firstNote.timing = (50f * firstNote.num) / (MusicData.BPM * firstNote.LPB);
+            firstNote.timing = (50f * firstNote.num) / (float)(MusicData.BPM * firstNote.LPB);
             firstNote.noteObjects = new List<GameObject>();
             _notes[firstNote.block].Add(firstNote);
             if (music.notes[i].notes.Length == 1)
@@ -73,32 +91,34 @@ public class PlaySceneProcessManager : MonoBehaviour
                 nextNote.num = music.notes[i].notes[0].num;
                 nextNote.block = music.notes[i].notes[0].block;
                 nextNote.type = music.notes[i].notes[0].type;
-                nextNote.timing = (50f * nextNote.num) / (MusicData.BPM * nextNote.LPB);
+                nextNote.timing = (50f * nextNote.num) / (float)(MusicData.BPM * nextNote.LPB);
                 _notes[nextNote.block].Add(nextNote);
             }
 
-            if (firstNote.type == 1)
+            if (firstNote.type == 1) // 生成は別のところで
             {
-                firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, 3f * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
+                //firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, 3f * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
             }
             else if (firstNote.type == 2)
             {
-                lng.Create(firstNote.block, nextNote.block, firstNote.timing, nextNote.timing);
+                //lng.Create(firstNote.block, nextNote.block, firstNote.timing, nextNote.timing);
             }
             else if (firstNote.type == 5)
             {
-
+                //firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, 3f * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
             }
         }
-    }
-
-    void NotesStart()
-    {
-        NotesFallUpdater.isPose = false;
+        // Sort
     }
 
     void BGMStart()
     {
         bgm.Play();
+        isPose = true;
+    }
+
+    public static void JudgeTiming(int lineNum, int type)
+    {
+        // 5のときは判定して見つからなければ2を考える
     }
 }

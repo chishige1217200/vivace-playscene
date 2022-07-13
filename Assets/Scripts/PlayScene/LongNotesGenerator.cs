@@ -6,7 +6,7 @@ public class LongNotesGenerator : MonoBehaviour
 {
     [SerializeField] Material longNotesFiller;
     static float laneWidth = 0.3f; //レーンの太さ( = ノーツの太さ )
-    static float _offset = 9f;
+    static float _offset = 9f; // 3秒分のオフセット
 
     void Start()
     {
@@ -45,7 +45,9 @@ public class LongNotesGenerator : MonoBehaviour
             longNotesPart.name = "longNotesPart" + i;
             longNotesPart.AddComponent<MeshFilter>();
             longNotesPart.AddComponent<MeshRenderer>().material = longNotesFiller;
+            longNotesPart.AddComponent<Rigidbody>().useGravity = false;
             longNotesPart.AddComponent<NotesFallUpdater>();
+
             Generate(curve[i], curve[i + 1], longNotesPart);
             longNotes.Add(longNotesPart);
         }
