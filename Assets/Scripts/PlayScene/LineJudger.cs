@@ -50,13 +50,13 @@ public class LineJudger : MonoBehaviour
     }
     public void BeginDrag(PointerEventData data)
     {
-        Debug.Log("BeginDrag: " + lineNum + "," + data.position.y + "," + data.pointerId);
+        //Debug.Log("BeginDrag: " + lineNum + "," + data.position.y + "," + data.pointerId);
         CoordYPresever.AddCoordY(data.position.y, lineNum);
     }
 
     public void Drop(PointerEventData data)
     {
-        Debug.Log("Drop: " + lineNum + "," + data.position.y + "," + data.pointerId);
+        //Debug.Log("Drop: " + lineNum + "," + data.position.y + "," + data.pointerId);
         int result = CoordYPresever.isFlick(data.position.y, lineNum);
         if (result == 1) // 長押しからフリック
         {
@@ -71,13 +71,13 @@ public class LineJudger : MonoBehaviour
 
     public void PointerDown()
     {
-        Debug.Log("PointerDown: " + lineNum);
+        //Debug.Log("PointerDown: " + lineNum);
         PlaySceneProcessManager.JudgeTiming(lineNum, 1);
     }
 
     public void PointerEnter(PointerEventData data)
     {
-        Debug.Log("PointerEnter: " + lineNum + "," + data.position.y + "," + data.pointerId);
+        //Debug.Log("PointerEnter: " + lineNum + "," + data.position.y + "," + data.pointerId);
         CoordYPresever.AddCoordY(data.position.y, lineNum);
     }
 }
