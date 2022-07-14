@@ -34,9 +34,12 @@ public class PlaySceneProcessManager : MonoBehaviour
     [SerializeField] LongNotesGenerator lng;
     [SerializeField] AudioSource bgm;
     [SerializeField] AudioSource metro;
+    [SerializeField] static AudioSource success;
     void Start()
     {
-        TextAsset jsonFile = Resources.Load("UFOCATCHER9_BGM (2)") as TextAsset;
+        AudioSource[] AS = GetComponents<AudioSource>();
+        success = AS[2];
+        TextAsset jsonFile = Resources.Load("UFOCATCHER9_BGM") as TextAsset;
         string inputString = jsonFile.ToString();
         MusicJson music = JsonUtility.FromJson<MusicJson>(inputString);
         MusicData.BPM = music.BPM;
@@ -65,6 +68,12 @@ public class PlaySceneProcessManager : MonoBehaviour
     {
         metro.Stop();
         metro.PlayOneShot(metro.clip);
+    }
+
+    static void Success()
+    {
+        success.Stop();
+        success.PlayOneShot(success.clip);
     }
 
     void LoadNotes(MusicJson music)
@@ -112,7 +121,7 @@ public class PlaySceneProcessManager : MonoBehaviour
             }
             else if (firstNote.type == 2)
             {
-                //lng.Create(firstNote.block, nextNote.block, firstNote.timing, nextNote.timing);
+                firstNote.noteObjects = lng.Create(firstNote.block, nextNote.block, firstNote.timing, nextNote.timing);
             }
             else if (firstNote.type == 5)
             {
@@ -136,10 +145,13 @@ public class PlaySceneProcessManager : MonoBehaviour
     public static void JudgeTiming(int lineNum, int type)
     {
         NoteData note;
-        note = _notes[lineNum].Find(n => Mathf.Abs(n.timing - musicTime) <= 1f && n.type == type);
+        note = _notes[lineNum].Find(n => Mathf.Abs(n.timing - musicTime) <= 0.5f && n.type == type);
         if (note != null)
         {
             Debug.Log("OK!: " + musicTime + " " + lineNum);
+            Success();
+            if (note.noteObjects != null && note.noteObjects[0] != null) Destroy(note.noteObjects[0]);
+            _notes[lineNum].Remove(note);
             return;
         }
         else
@@ -148,8 +160,8 @@ public class PlaySceneProcessManager : MonoBehaviour
         if (type == 5)
             JudgeTiming(lineNum, 2);
 
-        if (type == 2)
-            JudgeTiming(lineNum, 1);
+        if (type == 1)
+            JudgeTiming(lineNum, 2);
         // 5のときは判定して見つからなければ2を考える
     }
 }
