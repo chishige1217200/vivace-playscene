@@ -100,7 +100,7 @@ public class PlaySceneProcessManager : MonoBehaviour
             firstNote.timing = a / b;
             //Debug.Log(i + " " + a);
             //Debug.Log(i + " " + b);
-            Debug.Log(i + " " + firstNote.block + " " + firstNote.timing);
+            //Debug.Log(i + " " + firstNote.block + " " + firstNote.timing);
             firstNote.noteObjects = new List<GameObject>();
             _notes[firstNote.block].Add(firstNote);
             if (music.notes[i].notes.Length == 1)
@@ -132,8 +132,8 @@ public class PlaySceneProcessManager : MonoBehaviour
         for (int i = 0; i < _notes.Count; i++)
             _notes[i].OrderBy(item => item.timing);
 
-        Debug.Log(_notes[0][0].block + _notes[0][0].timing);
-        Debug.Log(_notes[0][1].block + _notes[0][1].timing);
+        //Debug.Log(_notes[0][0].block + _notes[0][0].timing);
+        //Debug.Log(_notes[0][1].block + _notes[0][1].timing);
     }
 
     void BGMStart()
