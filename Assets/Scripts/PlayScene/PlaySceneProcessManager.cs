@@ -161,7 +161,7 @@ public class PlaySceneProcessManager : MonoBehaviour
         {
             //Debug.Log("OK!: " + musicTime + " " + lineNum);
             Success(note.type);
-            if (note.noteObjects != null && note.noteObjects[0] != null) Destroy(note.noteObjects[0]);
+            if (note.noteObjects != null && note.noteObjects[0] != null && note.type != 2) Destroy(note.noteObjects[0]);
             _notes[lineNum].Remove(note);
             return;
         }
