@@ -73,11 +73,12 @@ public class PlaySceneProcessManager : MonoBehaviour
         metro.PlayOneShot(metro.clip);
     }
 
-    static void Success()
+    static void Success(int type)
     {
         metro.Stop();
         //success.Stop();
-        success.PlayOneShot(success.clip);
+        if (type != 5) success.PlayOneShot(success.clip);
+        else frick.PlayOneShot(frick.clip);
     }
 
     static void Bad()
@@ -135,7 +136,7 @@ public class PlaySceneProcessManager : MonoBehaviour
             }
             else if (firstNote.type == 5)
             {
-                firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, NotesFallUpdater.speed * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
+                firstNote.noteObjects.Add((GameObject)Instantiate(noteObjectF, new Vector3(-0.9f + laneWidth * firstNote.block, NotesFallUpdater.speed * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
             }
         }
 
@@ -158,15 +159,15 @@ public class PlaySceneProcessManager : MonoBehaviour
         note = _notes[lineNum].Find(n => Mathf.Abs(n.timing - musicTime) <= 0.5f && n.type == type);
         if (note != null)
         {
-            Debug.Log("OK!: " + musicTime + " " + lineNum);
-            Success();
+            //Debug.Log("OK!: " + musicTime + " " + lineNum);
+            Success(note.type);
             if (note.noteObjects != null && note.noteObjects[0] != null) Destroy(note.noteObjects[0]);
             _notes[lineNum].Remove(note);
             return;
         }
         else
         {
-            Debug.Log("Failed.: " + musicTime + " " + lineNum);
+            //Debug.Log("Failed.: " + musicTime + " " + lineNum);
             Bad();
         }
 
