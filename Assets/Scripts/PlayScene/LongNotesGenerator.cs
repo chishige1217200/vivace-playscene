@@ -17,9 +17,9 @@ public class LongNotesGenerator : MonoBehaviour
     {
         Debug.Log(startLane + ", " + endLane + ", " + startTim + ", " + endTim);
         //曲線の始点、制御点(今回は適当に設定)、終点
-        Vector3 startPos = new Vector3(-0.9f + laneWidth * startLane, 3f * (startTim + NotesFallUpdater.speed), -0.005f);
-        Vector3 controlPos = new Vector3(-0.9f + laneWidth * endLane, 3f * (startTim + NotesFallUpdater.speed + 3f * ((endTim - startTim) / 4)), -0.005f);
-        Vector3 endPos = new Vector3(-0.9f + laneWidth * endLane, 3f * (endTim + NotesFallUpdater.speed), -0.005f);
+        Vector3 startPos = new Vector3(-0.9f + laneWidth * startLane, NotesFallUpdater.speed * (startTim + 3f), -0.005f);
+        Vector3 controlPos = new Vector3(-0.9f + laneWidth * endLane, NotesFallUpdater.speed * (startTim + 3f + 3 * ((endTim - startTim) / 4)), -0.005f);
+        Vector3 endPos = new Vector3(-0.9f + laneWidth * endLane, NotesFallUpdater.speed * (endTim + 3f), -0.005f);
 
         //曲線生成
         Vector3[] curve = GetCurve(startPos, controlPos, endPos, 10);
