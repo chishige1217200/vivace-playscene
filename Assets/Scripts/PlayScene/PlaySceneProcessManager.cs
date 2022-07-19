@@ -33,12 +33,15 @@ public class PlaySceneProcessManager : MonoBehaviour
     static float musicTime;
     [SerializeField] LongNotesGenerator lng;
     [SerializeField] AudioSource bgm;
-    [SerializeField] AudioSource metro;
+    [SerializeField] static AudioSource metro;
     [SerializeField] static AudioSource success;
+    [SerializeField] static AudioSource frick;
     void Start()
     {
         AudioSource[] AS = GetComponents<AudioSource>();
+        metro = AS[1];
         success = AS[2];
+        frick = AS[3];
         TextAsset jsonFile = Resources.Load("UFOCATCHER9_BGM") as TextAsset;
         string inputString = jsonFile.ToString();
         MusicJson music = JsonUtility.FromJson<MusicJson>(inputString);
@@ -51,7 +54,7 @@ public class PlaySceneProcessManager : MonoBehaviour
         isPose = false;
         LoadNotes(music);
         //Invoke("NotesStart", 1);
-        InvokeRepeating("Metro", 1, 60f / MusicData.BPM);
+        //InvokeRepeating("Metro", 1, 60f / MusicData.BPM);
         Invoke("BGMStart", 3); // ノーツ再生から3秒待たなければならない
     }
 
@@ -64,7 +67,7 @@ public class PlaySceneProcessManager : MonoBehaviour
         }
     }
 
-    void Metro()
+    static void Metro()
     {
         metro.Stop();
         metro.PlayOneShot(metro.clip);
@@ -72,8 +75,15 @@ public class PlaySceneProcessManager : MonoBehaviour
 
     static void Success()
     {
-        success.Stop();
+        metro.Stop();
+        //success.Stop();
         success.PlayOneShot(success.clip);
+    }
+
+    static void Bad()
+    {
+        //metro.Stop();
+        metro.PlayOneShot(metro.clip);
     }
 
     void LoadNotes(MusicJson music)
@@ -117,7 +127,7 @@ public class PlaySceneProcessManager : MonoBehaviour
 
             if (firstNote.type == 1) // 生成は別のところで
             {
-                firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, 3f * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
+                firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, NotesFallUpdater.speed * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
             }
             else if (firstNote.type == 2)
             {
@@ -125,7 +135,7 @@ public class PlaySceneProcessManager : MonoBehaviour
             }
             else if (firstNote.type == 5)
             {
-                //firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, 3f * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
+                firstNote.noteObjects.Add((GameObject)Instantiate(noteObject, new Vector3(-0.9f + laneWidth * firstNote.block, NotesFallUpdater.speed * firstNote.timing + _offset, -0.005f), new Quaternion(0, 0, 0, 0)));
             }
         }
 
@@ -155,7 +165,10 @@ public class PlaySceneProcessManager : MonoBehaviour
             return;
         }
         else
+        {
             Debug.Log("Failed.: " + musicTime + " " + lineNum);
+            Bad();
+        }
 
         if (type == 5)
             JudgeTiming(lineNum, 2);
