@@ -28,7 +28,7 @@ public class PlaySceneProcessManager : MonoBehaviour
 {
     static List<List<NoteData>> _notes = new List<List<NoteData>>(); // 2次元リスト
     static float laneWidth = 0.3f; //レーンの太さ( = ノーツの太さ )
-    float _offset = 9f;
+    float _offset = 3f * NotesFallUpdater.speed;
     public static bool isPose { get; private set; } = true;
     static float musicTime;
     [SerializeField] LongNotesGenerator lng;
@@ -168,7 +168,7 @@ public class PlaySceneProcessManager : MonoBehaviour
         else
         {
             //Debug.Log("Failed.: " + musicTime + " " + lineNum);
-            Bad();
+            //Bad();
         }
 
         if (type == 5)

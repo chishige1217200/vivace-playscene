@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class NotesFallUpdater : MonoBehaviour
 {
-    public static float speed = 3f; // 1秒間に3m移動
+    public static float speed = 6f; // 1秒間に3m移動
     //public static bool isPose = true;
     private Rigidbody rb;
 
